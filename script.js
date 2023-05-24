@@ -19,31 +19,53 @@ const context = canvas.getContext("2d");
 
 
 let globalActivation = leakyRelu;
+let globalRegularization = noRegulation;
 let globalLayers = [
-	new Layer(2, 6, globalActivation, randomWeight),
-	new Layer(6, 3, globalActivation, randomWeight),
+	new Layer(2, 6, globalActivation, globalRegularization, randomWeight),
+	new Layer(6, 3, globalActivation, globalRegularization, randomWeight),
 ];
 let globalLearningRate = 0.1;
-const H = 0.01;
-let network = new NeuralNetwork(globalLayers, globalLearningRate, H);
+let globalRegularizationRate = 0.001;
+const H = 0.0001;
+let network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegularizationRate, H);
 
 let selectedColor = [1.0, 0.0, 0.0];
 
 const dataPoints = [
-	new DataPoint([10 / canvas.width, 10 / canvas.height], [1.0, 0.0, 0.0]),
-	new DataPoint([40 / canvas.width, 40 / canvas.height], [0.0, 0.0, 1.0]),
+	// new DataPoint([0.2, 0.2], [1.0, 0.0, 0.0]), // red
+    // new DataPoint([0.8, 0.8], [0.0, 1.0, 0.0]), // green
+	// new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
+
+    new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
+    new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
+
+
+    // new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
+    // new DataPoint([0.85, 0.15], [1.0, 0.0, 0.0]), // red
+
+    // new DataPoint([0.15, 0.5], [0.0, 1.0, 0.0]), // green
+    // new DataPoint([0.5, 0.5], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.85, 0.5], [0.0, 1.0, 0.0]), // green
+
+    // new DataPoint([0.15, 0.85], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
 ];
+
+
 let paused = false;
 
 function apply() {
     // NOTE: order matters
 
     updateActivation(); // sets globalActivation
+    updateRegularization(); // sets globalRegularization
 
-	updateLayers(); // sets globalLayers (uses globalActivation)
+	updateLayers(); // sets globalLayers (uses globalActivation and globalRegularization)
     updateLearningRate(); // sets globalLearningRate
+    updateRegularizationRate(); // sets globalRegularizationRate
 
-    network = new NeuralNetwork(globalLayers, globalLearningRate, H);
+    network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegularizationRate, H);
     console.log(network);
 }
 
@@ -69,10 +91,10 @@ function updateLayers() {
 	const layers = [];
 	let lastSize = 2;
 	for (let i = 0; i < valSplit.length; i++) {
-		layers.push(new Layer(lastSize, valSplit[i], globalActivation, randomWeight));
+		layers.push(new Layer(lastSize, valSplit[i], globalActivation, globalRegularization, randomWeight));
 		lastSize = valSplit[i];
 	}
-	layers.push(new Layer(lastSize, 3, globalActivation, randomWeight));
+	layers.push(new Layer(lastSize, 3, globalActivation, globalRegularization, randomWeight));
 
 
     globalLayers = layers;
@@ -104,6 +126,29 @@ function updateLearningRate() {
     learningRate.innerHTML = parsed;
     learningRate.style.border = "none";
 }
+function updateRegularization() {
+    const regularizationSelect = document.getElementById("REGULARIZATION");
+    switch (regularizationSelect.value) {
+        case "noRegulation": globalRegularization = noRegulation; break;
+        case "L1": globalRegularization = L1; break;
+        case "L2": globalRegularization = L2; break;
+    }
+}
+function updateRegularizationRate() {
+    const regularizationRate = document.getElementById("REGULARIZATION_RATE");
+
+    const parsed = parseFloat(regularizationRate.value);
+    if (isNaN(parsed) || parsed < 0 || parsed > 1) {
+        regularizationRate.style.border = "2px solid #BF616A";
+        return;
+    }
+
+    globalRegularizationRate = parsed;
+
+    regularizationRate.innerHTML = parsed;
+    regularizationRate.style.border = "none";
+}
+
 
 function setOnChangeForRadioButtons() {
     const radioButtons = document.querySelectorAll("input[type=radio][name='COLOR']");
@@ -193,11 +238,11 @@ function resetNetwork() {
     const newLayers = [];
     for (let i = 0; i < globalLayers.length; i++) {
         const layer = globalLayers[i];
-        newLayers.push(new Layer(layer.numInputs, layer.numOutputs, layer.activationFunction, randomWeight));
+        newLayers.push(new Layer(layer.numInputs, layer.numOutputs, layer.activationFunction, layer.regularizationFunction, randomWeight));
     }
     globalLayers = newLayers;
 
-    network = new NeuralNetwork(globalLayers, globalLearningRate, H);
+    network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegularizationRate, H);
 }
 
 

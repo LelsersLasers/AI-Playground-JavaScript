@@ -7,7 +7,7 @@ class DataPoint {
 }
 
 class Layer {
-	constructor(numInputs, numOutputs, activationFunction, weightInitFunction) {
+	constructor(numInputs, numOutputs, activationFunction, regularizationFunction, weightInitFunction) {
 		this.numInputs = numInputs;
 		this.numOutputs = numOutputs;
 		
@@ -32,6 +32,7 @@ class Layer {
 		}
 
 		this.activationFunction = activationFunction;
+		this.regularizationFunction = regularizationFunction;
 	}
 	forwardPass(inputs) {
 		const outputs = [];
@@ -54,14 +55,26 @@ class Layer {
 			this.biasGradients[i] = 0;
 		}
 	}
+	regularizationCost() {
+		let cost = 0;
+		for (let i = 0; i < this.numOutputs; i++) {
+			for (let j = 0; j < this.numInputs; j++) {
+				cost += this.regularizationFunction(this.weights[i][j]);
+			}
+			cost += this.regularizationFunction(this.bias[i]);
+		}
+		return cost / (this.numInputs * this.numOutputs + this.numOutputs)
+	}
 }
 
 class NeuralNetwork {
-	constructor(layers, learningRate, h) {
+	constructor(layers, learningRate, regularizationRate, h) {
 		this.layers = layers;
 		this.numLayers = layers.length;
 
 		this.learningRate = learningRate;
+		this.regularizationRate = regularizationRate;
+
 		this.h = h;
 	}
 	forwardPass(inputs) {
@@ -83,6 +96,9 @@ class NeuralNetwork {
 		let cost = 0;
 		for (let i = 0; i < dataPoints.length; i++) {
 			cost += this.costOfOne(dataPoints[i]);
+		}
+		for (let i = 0; i < this.layers.length; i++) {
+			cost += this.layers[i].regularizationCost() * this.regularizationRate;
 		}
 		return cost / dataPoints.length;
 	}
@@ -129,4 +145,8 @@ const sigmoid = x => 1 / (1 + Math.exp(-x));
 const tanh = x => Math.tanh(x);
 const linear = x => x;
 
-const randomWeight = () => Math.random() - 0.25; // -0.25 to 0.75
+const L1 = x => Math.abs(x);
+const L2 = x => x ** 2;
+const noRegulation = x => 0;
+
+const randomWeight = () => (Math.random() - 0.5) / 2; // -0.25 to 0.25

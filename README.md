@@ -20,15 +20,21 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 	- None
 - Regularization rate
 - WEIGHT MOMENTUM
+- Different inputs
+	- X
+	- Y
+	- X^2
+	- Y^2
+	- X * Y
+	- sin(X)
+	- sin(Y)
 
 ### TODO
 
-- Regularization
-    - L1
-    - L2
-    - None
 - Style 'select' elements
 - Weight momentum
+- Different inputs
 - ??
     - Cost graph
     - Network visualization
+- ITCH.IO page
