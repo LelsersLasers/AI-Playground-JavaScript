@@ -1,6 +1,7 @@
 const RADIUS_RATIO = 0.01;
 
 let resolution = 100;
+let iterations = 1;
 
 const canvas = document.getElementsByTagName("canvas")[0];
 canvas.addEventListener("click", function(event) {
@@ -17,6 +18,16 @@ canvas.addEventListener("click", function(event) {
 
 const context = canvas.getContext("2d");
 
+const inputOptions = [
+    inputs => inputs[0],                // X
+    inputs => inputs[1],                // Y
+    inputs => inputs[0] * inputs[0],    // X^2
+    inputs => inputs[1] * inputs[1],    // Y^2
+    inputs => inputs[0] * inputs[1],    // X*Y
+    inputs => Math.sin(inputs[0]),      // SIN(X)
+    inputs => Math.sin(inputs[1]),      /// SIN(Y)
+];
+const toggledInputs = [0, 1];
 
 let globalActivation = leakyRelu;
 let globalRegularization = noRegulation;
@@ -26,7 +37,7 @@ let globalLayers = [
 ];
 let globalLearningRate = 0.1;
 let globalRegularizationRate = 0.001;
-const H = 0.0001;
+const H = 0.00001;
 let network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegularizationRate, H);
 
 let selectedColor = [1.0, 0.0, 0.0];
@@ -89,7 +100,7 @@ function updateLayers() {
 	}
 
 	const layers = [];
-	let lastSize = 2;
+	let lastSize = toggledInputs.length;
 	for (let i = 0; i < valSplit.length; i++) {
 		layers.push(new Layer(lastSize, valSplit[i], globalActivation, globalRegularization, randomWeight));
 		lastSize = valSplit[i];
@@ -211,6 +222,50 @@ function setOnChangeForResolution() {
         resolutionElement.style.border = "none";
     });
 }
+function setOnCHangeForIterations() {
+    const iterationsElement = document.getElementById("ITERATIONS");
+    iterationsElement.addEventListener("input", function() {
+        const parsed = parseInt(iterationsElement.value);
+        if (isNaN(parsed) || parsed < 1 || parsed > 20) {
+            iterationsElement.style.border = "2px solid #BF616A";
+            return;
+        }
+        iterations = parsed;
+
+        iterationsElement.innerHTML = parsed;
+        iterationsElement.style.border = "none";
+    });
+}
+
+function setOnChangeForInputs() {
+    const inputsElement = document.querySelectorAll("input[type=checkbox]");
+    inputsElement.forEach(inputElement => {
+        inputElement.addEventListener("change", function() {
+            const id = this.id.replace("INPUT-", "");
+            if (this.checked) {
+                switch (id) {
+                    case "X":       toggledInputs.push(0); break;
+                    case "Y":       toggledInputs.push(1); break;
+                    case "X^2":     toggledInputs.push(2); break;
+                    case "Y^2":     toggledInputs.push(3); break;
+                    case "X*Y":     toggledInputs.push(4); break;
+                    case "SIN(X)":  toggledInputs.push(5); break;
+                    case "SIN(Y)":  toggledInputs.push(6); break;
+                }
+            } else {
+                switch (id) {
+                    case "X":       toggledInputs.filter(x => x != 0); break;
+                    case "Y":       toggledInputs.filter(x => x != 1); break;
+                    case "X^2":     toggledInputs.filter(x => x != 2); break;
+                    case "Y^2":     toggledInputs.filter(x => x != 3); break;
+                    case "X*Y":     toggledInputs.filter(x => x != 4); break;
+                    case "SIN(X)":  toggledInputs.filter(x => x != 5); break;
+                    case "SIN(Y)":  toggledInputs.filter(x => x != 6); break;
+                }
+            }
+        });
+    });
+}
 
 
 function resize() {
@@ -278,10 +333,23 @@ function render() {
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
     const w = Math.ceil(canvas.width / resolution);
+
+    const inputFns = [];
+    for (let i = 0; i < toggledInputs.length; i++) {
+        const fn = inputOptions[toggledInputs[i]];
+        inputFns.push(fn);
+    }
+
     for (let x = 0; x < resolution; x++) {
         for (let y = 0; y < resolution; y++) {
 
-            const inputs = [x / resolution, y / resolution];
+            const baseInputs = [x / resolution, y / resolution];
+            const inputs = [];
+            for (let i = 0; i < inputFns.length; i++) {
+                const fn = inputFns[i];
+                inputs.push(fn(baseInputs));
+            }
+
             const outputs = network.forwardPass(inputs);
 
             context.fillStyle = rgbToFillStyle(outputs[0], outputs[1], outputs[2]);
@@ -292,8 +360,21 @@ function render() {
 
     renderDataPoints();
 
+    const transformedDataPoints = [];
+    for (let i = 0; i < dataPoints.length; i++) {
+        const dataPoint = dataPoints[i];
+
+        const baseInputs = dataPoint.inputs;
+        const inputs = [];
+        for (let i = 0; i < inputFns.length; i++) {
+            const fn = inputFns[i];
+            inputs.push(fn(baseInputs));
+        }
+        transformedDataPoints.push(new DataPoint(inputs, dataPoint.outputs));
+    }
+
 	if (!paused && dataPoints.length > 0) {
-		network.learnIterate(dataPoints, 1);
+		network.learnIterate(transformedDataPoints, iterations);
 	}
 
 
@@ -303,7 +384,7 @@ function render() {
 
 
 	document.getElementById("fpsText").innerHTML = "FPS: " + Math.round(1000 / delta);
-	document.getElementById("costText").innerHTML = "Cost: " + network.costOfAll(dataPoints).toFixed(3);
+	document.getElementById("costText").innerHTML = "Cost: " + network.costOfAll(transformedDataPoints).toFixed(3);
 
 
 	window.requestAnimationFrame(render);
@@ -311,7 +392,10 @@ function render() {
 
 
 setOnChangeForRadioButtons();
+setOnChangeForInputs();
+
 setOnChangeForResolution();
+setOnCHangeForIterations();
 
 var t0 = performance.now();
 var t1 = performance.now();

@@ -23,15 +23,26 @@
 
         <div id="settings">
 
+            <span id="fpsText">FPS: 60</span>
+            <br />
+
+            <span id="costText">Cost: 1.0</span>
+            <br />
+
+            <hr />
 
             <label for="RESOLUTION">Resolution:</label>
             <input type="text" id="RESOLUTION" value="75" />
             <br class="spacing" />
 
+            <label for="ITERATIONS">Iterations per frame:</label>
+            <input type="text" id="ITERATIONS" value="1" />
+            <br class="spacing" />
+
             <hr />
 
 			<label for="HIDDEN_LAYERS">Layers:</label>
-            <input type="text" id="HIDDEN_LAYERS" value="6,6" />
+            <input type="text" id="Hidden Layers" value="6,6" />
             <br class="spacing" />
 
             <!-- TODO: style 'select' elements -->
@@ -62,6 +73,45 @@
             <label for="REGULARIZATION_RATE">Regularization Rate:</label>
             <input type="text" id="REGULARIZATION_RATE" value="0.001" />
             <br class="spacing" />
+
+            <br />
+
+            <label for="INPUTS">Inputs:</label>
+            
+            <div class="flex-container">
+                <div>
+                    <label class="leftTab" for="INPUT-X">X:</label>
+                    <br />
+                    <label class="leftTab" for="INPUT-Y">Y:</label>
+                    <br />
+                    <label class="leftTab" for="INPUT-X^2">X^2:</label>
+                    <br />
+                    <label class="leftTab" for="INPUT-Y^2">Y^2:</label>
+                    <br />
+                    <label class="leftTab" for="INPUT-X*Y">X*Y:</label>
+                    <br />
+                    <label class="leftTab" for="INPUT-SIN(X)">sin(X):</label>
+                    <br />
+                    <label class="leftTab" for="INPUT-SIN(Y)">sin(Y):</label>
+                    <br />
+                </div>
+                <div>
+                    <input class="leftTab" type="checkbox" id="INPUT-X" name="INPUT-X" checked />
+                    <br />
+                    <input class="leftTab" type="checkbox" id="INPUT-Y" name="INPUT-Y" checked />
+                    <br />
+                    <input class="leftTab" type="checkbox" id="INPUT-X^2" name="INPUT-X^2" />
+                    <br />
+                    <input class="leftTab" type="checkbox" id="INPUT-Y^2" name="INPUT-Y^2" />
+                    <br />
+                    <input class="leftTab" type="checkbox" id="INPUT-X*Y" name="INPUT-X*Y" />
+                    <br />
+                    <input class="leftTab" type="checkbox" id="INPUT-SIN(X)" name="INPUT-SIN(X)" />
+                    <br />
+                    <input class="leftTab" type="checkbox" id="INPUT-SIN(Y)" name="INPUT-SIN(Y)" />
+                    <br />
+                </div>
+            </div>
 
             <br />
             
@@ -106,19 +156,6 @@
             <br />
 
             <button onclick="resetNetwork()">Reset Network Weights</button>
-
-            <hr />
-
-            <span id="fpsText">FPS: 20</span>
-            <br />
-
-            <span id="costText">Cost: 1.0</span>
-            <br />
-
-            <!-- <span id="stackText">Propagation Stacks: 0</span>
-            <br />
-
-            <span id="iterationText">Random Decisions: 0</span> -->
 
         </div>
 

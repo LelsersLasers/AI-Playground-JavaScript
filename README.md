@@ -2,38 +2,12 @@
 
 Tinker with a neural network in your browser. Self-made model without any calculus.
 
-## NOTES
+## TODO
 
-### Plugins
-
-- Network shape
-- Learning rate
-- Activation
-	- ReLU
-    - Leaky ReLU
-	- Sigmoid
-	- Tanh
-	- Linear
-- Regularization
-	- L1
-	- L2
-	- None
-- Regularization rate
-- WEIGHT MOMENTUM
-- Different inputs
-	- X
-	- Y
-	- X^2
-	- Y^2
-	- X * Y
-	- sin(X)
-	- sin(Y)
-
-### TODO
-
+- HIDDEN LAYERS IS ONE SHORT?
+	- 6,6 => 2, 6, 6, 3 (not 2, 6, 3)
 - Style 'select' elements
 - Weight momentum
-- Different inputs
 - ??
     - Cost graph
     - Network visualization

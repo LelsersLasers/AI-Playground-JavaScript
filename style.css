@@ -54,6 +54,10 @@ canvas {
     margin: 0.3em;
 }
 
+.leftTab {
+    margin-left: 1em !important;
+}
+
 hr {
     background-color: #ECEFF4;
     border: none;
