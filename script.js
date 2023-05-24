@@ -336,7 +336,8 @@ function render() {
 	context.fillStyle = "#3B4252";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
-    const w = Math.ceil(canvas.width / resolution);
+    const w = canvas.width / resolution;
+    const ceilW = Math.ceil(w);
 
     const inputFns = [];
     for (let i = 0; i < toggledInputs.length; i++) {
@@ -358,7 +359,7 @@ function render() {
 
             context.fillStyle = rgbToFillStyle(outputs[0], outputs[1], outputs[2]);
 
-            context.fillRect(Math.floor(x * w), Math.floor(y * w), w, w);
+            context.fillRect(Math.floor(x * w), Math.floor(y * w), ceilW, ceilW);
         }
     }
 
