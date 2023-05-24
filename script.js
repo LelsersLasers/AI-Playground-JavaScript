@@ -33,6 +33,7 @@ let globalActivation = leakyRelu;
 let globalRegularization = noRegulation;
 let globalLayers = [
 	new Layer(2, 6, globalActivation, globalRegularization, randomWeight),
+    new Layer(6, 6, globalActivation, globalRegularization, randomWeight),
 	new Layer(6, 3, globalActivation, globalRegularization, randomWeight),
 ];
 let globalLearningRate = 0.1;
@@ -48,18 +49,21 @@ const dataPoints = [
 	// new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
     // new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
 
+
     new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
     new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
 
 
     // new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
+    // new DataPoint([0.50, 0.15], [0.0, 1.0, 0.0]), // green
     // new DataPoint([0.85, 0.15], [1.0, 0.0, 0.0]), // red
 
     // new DataPoint([0.15, 0.5], [0.0, 1.0, 0.0]), // green
-    // new DataPoint([0.5, 0.5], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.50, 0.5], [0.0, 0.0, 1.0]), // blue
     // new DataPoint([0.85, 0.5], [0.0, 1.0, 0.0]), // green
 
     // new DataPoint([0.15, 0.85], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.50, 0.85], [1.0, 0.0, 0.0]), // red
     // new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
 ];
 
@@ -212,7 +216,7 @@ function setOnChangeForResolution() {
     const resolutionElement = document.getElementById("RESOLUTION");
     resolutionElement.addEventListener("input", function() {
         const parsed = parseInt(resolutionElement.value);
-        if (isNaN(parsed) || parsed < 5 || parsed > 250) {
+        if (isNaN(parsed) || parsed < 5 || parsed > 500) {
             resolutionElement.style.border = "2px solid #BF616A";
             return;
         }
@@ -222,11 +226,11 @@ function setOnChangeForResolution() {
         resolutionElement.style.border = "none";
     });
 }
-function setOnCHangeForIterations() {
+function setOnChangeForIterations() {
     const iterationsElement = document.getElementById("ITERATIONS");
     iterationsElement.addEventListener("input", function() {
         const parsed = parseInt(iterationsElement.value);
-        if (isNaN(parsed) || parsed < 1 || parsed > 20) {
+        if (isNaN(parsed) || parsed < 1 || parsed > 100) {
             iterationsElement.style.border = "2px solid #BF616A";
             return;
         }
@@ -395,7 +399,7 @@ setOnChangeForRadioButtons();
 setOnChangeForInputs();
 
 setOnChangeForResolution();
-setOnCHangeForIterations();
+setOnChangeForIterations();
 
 var t0 = performance.now();
 var t1 = performance.now();

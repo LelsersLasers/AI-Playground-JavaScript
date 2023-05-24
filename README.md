@@ -4,11 +4,10 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 
 ## TODO
 
-- HIDDEN LAYERS IS ONE SHORT?
-	- 6,6 => 2, 6, 6, 3 (not 2, 6, 3)
 - Style 'select' elements
 - Weight momentum
 - ??
+	- Plugins for weight initialization
     - Cost graph
     - Network visualization
 - ITCH.IO page
