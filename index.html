@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Machine Learning Playground</title>
+
+	<script type="text/javascript" src="neural.js" defer></script>
+	<script type="text/javascript" src="script.js" defer></script>
+
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body onresize="resize();"" onload="resize();">
+
+    <div id="mainStuff" class="flex-container">
+
+        <div id="canvasContainer">
+            <canvas id="mainCanvas"></canvas>
+        </div>
+
+
+        <div id="settings">
+
+
+            <label for="RESOLUTION">Resolution:</label>
+            <input type="text" id="RESOLUTION" value="75" />
+            <br class="spacing" />
+
+            <hr />
+
+			<label for="HIDDEN_LAYERS">Layers:</label>
+            <input type="text" id="HIDDEN_LAYERS" value="6,6" />
+            <br class="spacing" />
+
+            <!-- TODO: style 'select' elements -->
+			<label for="ACTIVATION">Activation:</label>
+			<select id="ACTIVATION" name="ACTIVATION">
+                <option value="leakyRelu">Leaky ReLU</option>
+				<option value="relu">ReLU</option>
+				<option value="sigmoid">Sigmoid</option>
+				<option value="tanh">Tanh</option>
+				<option value="linear">Linear</option>
+			</select>
+			<br class="spacing" />
+
+			<label for="LEARNING_RATE">Learning Rate:</label>
+            <input type="text" id="LEARNING_RATE" value="0.01" />
+            <br class="spacing" />
+
+            <br />
+
+            <label for="REGULARIZATION">Regularization:</label>
+			<select id="REGULARIZATION" name="REGULARIZATION">
+				<option value="none">None</option>
+				<option value="L1">L1</option>
+				<option value="L2">L2</option>
+			</select>
+			<br class="spacing" />
+
+            <label for="REGULARIZATION_RATE">Regularization Rate:</label>
+            <input type="text" id="REGULARIZATION_RATE" value="0.03" />
+            <br class="spacing" />
+
+            <br />
+            
+            <button onclick="apply()">Apply</button>
+
+            <br />
+            <hr />
+
+            <div id="liveUpdate">
+
+                <label for="COLOR">Place color:</label>
+                <br />
+                <input type="radio" id="red" name="COLOR" value="true" checked>
+                <label for="red">Red</label>
+                <br />
+                <input type="radio" id="green" name="COLOR" value="false">
+                <label for="green">Green</label>
+                <br />
+                <input type="radio" id="blue" name="COLOR" value="false">
+                <label for="blue">Blue</label>
+                <br />
+                <input type="radio" id="white" name="COLOR" value="false">
+                <label for="white">White</label>
+                <br />
+                <input type="radio" id="black" name="COLOR" value="false">
+                <label for="black">Black</label>
+                <br />
+                <input type="radio" id="custom" name="COLOR" value="false">
+                <label for="custom">Custom</label>
+                    <label for="CUSTOM_COLOR">Color:</label>
+                    <input type="text" id="CUSTOM_COLOR" value="180, 142, 173" />
+                <br class="spacing"/>
+
+            </div>
+
+            <hr />
+
+            <button id="pauseButton" onclick="togglePause()" style="margin-top: 0.5em;">Pause</button>
+            <br />
+
+            <button onclick="clearDataPoints()">Clear Datapoints</button>
+            <br />
+
+            <button onclick="resetNetwork()">Reset Network Weights</button>
+
+            <hr />
+
+            <span id="fpsText">FPS: 20</span>
+            <br />
+
+            <span id="costText">Cost: 1.0</span>
+            <br />
+
+            <!-- <span id="stackText">Propagation Stacks: 0</span>
+            <br />
+
+            <span id="iterationText">Random Decisions: 0</span> -->
+
+        </div>
+
+    </div>
+</body>
+
+
+</html>
