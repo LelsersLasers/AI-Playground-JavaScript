@@ -84,22 +84,30 @@ input {
     border: none;
     outline: none !important;
 }
+
+select {
+  height: 1.2em;
+  font-size: 1em;
+  
+  /* padding: 0.8em 0.5em; */
+
+  box-sizing: border-box;
+  background-color: #4C566A;
+  color: #ECEFF4;
+  /* border-radius: 7px; */
+  border: none;
+  outline: none !important;
+}
+
+select:focus {
+  outline: 2px solid #EBCB8B !important;
+}
+
 input:focus {
     outline: 2px solid #EBCB8B !important;
 }
 .smallInput {
     width: 3em;
-}
-input[type="file"] {
-    height: 3em;
-    cursor: pointer;
-    width: 100%;
-}
-input[type="color"] {
-    width: default;
-    padding: 0.15em;
-    height: 1.8em;
-    transform: translate(0, 0.2em);
 }
 input[type="checkbox"] {
     width: 0.8em;

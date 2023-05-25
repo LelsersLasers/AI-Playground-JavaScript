@@ -7,8 +7,9 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 - Plugins for weight initialization
     - Check if they are right!!
 - Style 'select' elements
-- Save/restore (like 3D ceullar automata)
 - ??
     - Cost graph
     - Network visualization
+    - Format JS?
+        - `npx prettier --write . --tab-width 4`
 - ITCH.IO page
