@@ -34,10 +34,11 @@ let epoches = 0;
 let globalActivation = leakyRelu;
 let globalRegularization = noRegulation;
 let globalInitialWeight = randomWeight;
+let globalMomentum = 0.9;
 let globalLayers = [
-	new Layer(2, 6, globalActivation, globalRegularization, globalInitialWeight),
-    new Layer(6, 6, globalActivation, globalRegularization, globalInitialWeight),
-	new Layer(6, 3, globalActivation, globalRegularization, globalInitialWeight),
+	new Layer(2, 6, globalActivation, globalRegularization, globalInitialWeight, globalMomentum),
+    new Layer(6, 6, globalActivation, globalRegularization, globalInitialWeight, globalMomentum),
+	new Layer(6, 3, globalActivation, globalRegularization, globalInitialWeight, globalMomentum),
 ];
 let globalLearningRate = 0.1;
 let globalRegularizationRate = 0.001;
@@ -47,15 +48,15 @@ let network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegulari
 let selectedColor = [1.0, 0.0, 0.0];
 
 const dataPoints = [
-	// new DataPoint([0.2, 0.2], [1.0, 0.0, 0.0]), // red
-    // new DataPoint([0.8, 0.8], [0.0, 1.0, 0.0]), // green
-	// new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
-    // new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
-    // new DataPoint([0.5, 0.5], [1.0, 1.0, 1.0]), // white
+	new DataPoint([0.2, 0.2], [1.0, 0.0, 0.0]), // red
+    new DataPoint([0.8, 0.8], [0.0, 1.0, 0.0]), // green
+	new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
+    new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
+    new DataPoint([0.5, 0.5], [1.0, 1.0, 1.0]), // white
 
 
-    new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
-    new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
+    // new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
 
 
     // new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
@@ -80,8 +81,10 @@ function apply() {
     updateActivation(); // sets globalActivation
     updateRegularization(); // sets globalRegularization
     updateInit(); // sets globalInitialWeight
+    updateMomentum(); // sets globalMomentum
 
-	updateLayers(); // sets globalLayers (uses globalActivation, globalRegularization, globalInitialWeight)
+	updateLayers(); // sets globalLayers (uses globalActivation, globalRegularization, globalInitialWeight, globalMomentum)
+
     updateLearningRate(); // sets globalLearningRate
     updateRegularizationRate(); // sets globalRegularizationRate
 
@@ -113,10 +116,10 @@ function updateLayers() {
 	const layers = [];
 	let lastSize = toggledInputs.length;
 	for (let i = 0; i < valSplit.length; i++) {
-		layers.push(new Layer(lastSize, valSplit[i], globalActivation, globalRegularization, globalInitialWeight));
+		layers.push(new Layer(lastSize, valSplit[i], globalActivation, globalRegularization, globalInitialWeight, globalMomentum));
 		lastSize = valSplit[i];
 	}
-	layers.push(new Layer(lastSize, 3, globalActivation, globalRegularization, globalInitialWeight));
+	layers.push(new Layer(lastSize, 3, globalActivation, globalRegularization, globalInitialWeight, globalMomentum));
 
 
     globalLayers = layers;
@@ -177,6 +180,20 @@ function updateInit() {
         case "xavier": globalInitialWeight = xavierWeight; break;
         case "he": globalInitialWeight = heWeight; break;
     }
+}
+function updateMomentum() {
+    const momentum = document.getElementById("MOMENTUM");
+
+    const parsed = parseFloat(momentum.value);
+    if (isNaN(parsed) || parsed < 0 || parsed > 1) {
+        momentum.style.border = "2px solid #BF616A";
+        return;
+    }
+
+    globalMomentum = parsed;
+
+    momentum.innerHTML = parsed;
+    momentum.style.border = "none";
 }
 
 
@@ -312,7 +329,7 @@ function resetNetwork() {
     const newLayers = [];
     for (let i = 0; i < globalLayers.length; i++) {
         const layer = globalLayers[i];
-        newLayers.push(new Layer(layer.numInputs, layer.numOutputs, layer.activationFunction, layer.regularizationFunction, layer.weightInitFunction));
+        newLayers.push(new Layer(layer.numInputs, layer.numOutputs, layer.activationFunction, layer.regularizationFunction, layer.weightInitFunction, layer.momentum));
     }
     globalLayers = newLayers;
 

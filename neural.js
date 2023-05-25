@@ -7,9 +7,11 @@ class DataPoint {
 }
 
 class Layer {
-	constructor(numInputs, numOutputs, activationFunction, regularizationFunction, weightInitFunction) {
+	constructor(numInputs, numOutputs, activationFunction, regularizationFunction, weightInitFunction, momentum) {
 		this.numInputs = numInputs;
 		this.numOutputs = numOutputs;
+
+		this.momentum = momentum;
 		
 		this.weights = [];
 		this.bias = [];
@@ -50,10 +52,10 @@ class Layer {
 		for (let i = 0; i < this.numOutputs; i++) {
 			for (let j = 0; j < this.numInputs; j++) {
 				this.weights[i][j] -= this.weightGradients[i][j] * learningRate;
-				this.weightGradients[i][j] = 0;
+				this.weightGradients[i][j] *= this.momentum;
 			}
 			this.bias[i] -= this.biasGradients[i] * learningRate;
-			this.biasGradients[i] = 0;
+			this.biasGradients[i] *= this.momentum;
 		}
 	}
 	regularizationCost() {

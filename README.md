@@ -7,7 +7,7 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 - Plugins for weight initialization
     - Check if they are right!!
 - Style 'select' elements
-- Weight momentum
+- Save/restore (like 3D ceullar automata)
 - ??
     - Cost graph
     - Network visualization
