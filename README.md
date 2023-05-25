@@ -4,6 +4,7 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 
 ## TODO
 
+- Epoch counter
 - Style 'select' elements
 - Weight momentum
 - ??
