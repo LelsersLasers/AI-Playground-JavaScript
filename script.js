@@ -29,6 +29,8 @@ const inputOptions = [
 ];
 const toggledInputs = [0, 1];
 
+let epoches = 0;
+
 let globalActivation = leakyRelu;
 let globalRegularization = noRegulation;
 let globalLayers = [
@@ -82,6 +84,8 @@ function apply() {
 
     network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegularizationRate, H);
     console.log(network);
+
+    epoches = 0;
 }
 
 function updateLayers() {
@@ -302,6 +306,8 @@ function resetNetwork() {
     globalLayers = newLayers;
 
     network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegularizationRate, H);
+
+    epoches = 0;
 }
 
 
@@ -380,6 +386,7 @@ function render() {
 
 	if (!paused && dataPoints.length > 0) {
 		network.learnIterate(transformedDataPoints, iterations);
+        epoches += iterations;
 	}
 
 
@@ -390,6 +397,7 @@ function render() {
 
 	document.getElementById("fpsText").innerHTML = "FPS: " + Math.round(1000 / delta);
 	document.getElementById("costText").innerHTML = "Cost: " + network.costOfAll(transformedDataPoints).toFixed(3);
+    document.getElementById("epochesText").innerHTML = "Epoches: " + epoches;
 
 
 	window.requestAnimationFrame(render);

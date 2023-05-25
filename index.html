@@ -26,6 +26,9 @@
             <span id="fpsText">FPS: 60</span>
             <br />
 
+            <span id="epochesText">Epoches: 0</span>
+            <br />
+
             <span id="costText">Cost: 1.0</span>
             <br />
 
@@ -59,6 +62,17 @@
 			<label for="LEARNING_RATE">Learning Rate:</label>
             <input type="text" id="LEARNING_RATE" value="0.01" />
             <br class="spacing" />
+
+            <br />
+
+            <label for="INIT">Weight Initialization:</label>
+			<select id="INIT" name="INIT">
+				<option value="random">Random</option>
+				<option value="normal">Normal</option>
+				<option value="xavier">Xavier</option>
+				<option value="he">He</option>
+			</select>
+			<br class="spacing" />
 
             <br />
 
