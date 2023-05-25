@@ -153,17 +153,11 @@ const L2 			= x => x ** 2;
 const noRegulation	= x => 0;
 
 const randomWeight 	= (numInputs, numOutputs) => Math.random() - 0.5; // -0.5 to 0.5
-
-// TODO ARE THESE RIGHT??
-const normalWeight 	= (numInputs, numOutputs) => gaussianRandom(0, 1 / Math.sqrt(numInputs));
-const xavierWeight 	= (numInputs, numOutputs) => randomBetween(Math.sqrt(6 / (numInputs + numOutputs)));
-const heWeight		= (numInputs, numOutputs) => randomBetween(Math.sqrt(2 / numInputs));
+// TODO: ARE THESE RIGHT??
+const xavierWeight 	= (numInputs, numOutputs) => gaussianRandom(0, Math.sqrt(2 / (numInputs + numOutputs)));
+const heWeight		= (numInputs, numOutputs) => gaussianRandom(0, Math.sqrt(2 / numInputs));
 
 
-
-function randomBetween(x) {
-	return (Math.random() * x * 2) - x;
-}
 // Standard Normal variate using Box-Muller transform.
 function gaussianRandom(mean=0, stdev=1) {
     let u = 1 - Math.random(); // Converting [0,1) to (0,1]

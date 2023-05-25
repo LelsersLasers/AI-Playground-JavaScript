@@ -174,7 +174,6 @@ function updateInit() {
     const initSelect = document.getElementById("INIT");
     switch (initSelect.value) {
         case "random": globalInitialWeight = randomWeight; break;
-        case "normal": globalInitialWeight = normalWeight; break;
         case "xavier": globalInitialWeight = xavierWeight; break;
         case "he": globalInitialWeight = heWeight; break;
     }
