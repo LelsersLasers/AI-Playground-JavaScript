@@ -23,16 +23,17 @@ class Layer {
 			this.weightGradients.push([]);
 
 			for (let j = 0; j < numInputs; j++) {
-				this.weights[i].push(weightInitFunction());
+				this.weights[i].push(weightInitFunction(this.numInputs, this.numOutputs));
 				this.weightGradients[i].push(0);
 			}
 
-			this.bias.push(weightInitFunction());
+			this.bias.push(0); // Note: always bias starts at 0
 			this.biasGradients.push(0);
 		}
 
 		this.activationFunction = activationFunction;
 		this.regularizationFunction = regularizationFunction;
+		this.weightInitFunction = weightInitFunction;
 	}
 	forwardPass(inputs) {
 		const outputs = [];
@@ -139,14 +140,35 @@ class NeuralNetwork {
 	}
 }
 
-const relu = x => Math.max(0, x);
+
+
+const relu 		= x => Math.max(0, x);
 const leakyRelu = x => Math.max(0.01 * x, x);
-const sigmoid = x => 1 / (1 + Math.exp(-x));
-const tanh = x => Math.tanh(x);
-const linear = x => x;
+const sigmoid	= x => 1 / (1 + Math.exp(-x));
+const tanh		= x => Math.tanh(x);
+const linear	= x => x;
 
-const L1 = x => Math.abs(x);
-const L2 = x => x ** 2;
-const noRegulation = x => 0;
+const L1 			= x => Math.abs(x);
+const L2 			= x => x ** 2;
+const noRegulation	= x => 0;
 
-const randomWeight = () => (Math.random() - 0.5) / 2; // -0.25 to 0.25
+const randomWeight 	= (numInputs, numOutputs) => Math.random() - 0.5; // -0.5 to 0.5
+
+// TODO ARE THESE RIGHT??
+const normalWeight 	= (numInputs, numOutputs) => gaussianRandom(0, 1 / Math.sqrt(numInputs));
+const xavierWeight 	= (numInputs, numOutputs) => randomBetween(Math.sqrt(6 / (numInputs + numOutputs)));
+const heWeight		= (numInputs, numOutputs) => randomBetween(Math.sqrt(2 / numInputs));
+
+
+
+function randomBetween(x) {
+	return (Math.random() * x * 2) - x;
+}
+// Standard Normal variate using Box-Muller transform.
+function gaussianRandom(mean=0, stdev=1) {
+    let u = 1 - Math.random(); // Converting [0,1) to (0,1]
+    let v = Math.random();
+    let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    // Transform to the desired mean and standard deviation:
+    return z * stdev + mean;
+}

@@ -33,10 +33,11 @@ let epoches = 0;
 
 let globalActivation = leakyRelu;
 let globalRegularization = noRegulation;
+let globalInitialWeight = randomWeight;
 let globalLayers = [
-	new Layer(2, 6, globalActivation, globalRegularization, randomWeight),
-    new Layer(6, 6, globalActivation, globalRegularization, randomWeight),
-	new Layer(6, 3, globalActivation, globalRegularization, randomWeight),
+	new Layer(2, 6, globalActivation, globalRegularization, globalInitialWeight),
+    new Layer(6, 6, globalActivation, globalRegularization, globalInitialWeight),
+	new Layer(6, 3, globalActivation, globalRegularization, globalInitialWeight),
 ];
 let globalLearningRate = 0.1;
 let globalRegularizationRate = 0.001;
@@ -50,6 +51,7 @@ const dataPoints = [
     // new DataPoint([0.8, 0.8], [0.0, 1.0, 0.0]), // green
 	// new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
     // new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
+    // new DataPoint([0.5, 0.5], [1.0, 1.0, 1.0]), // white
 
 
     new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
@@ -77,8 +79,9 @@ function apply() {
 
     updateActivation(); // sets globalActivation
     updateRegularization(); // sets globalRegularization
+    updateInit(); // sets globalInitialWeight
 
-	updateLayers(); // sets globalLayers (uses globalActivation and globalRegularization)
+	updateLayers(); // sets globalLayers (uses globalActivation, globalRegularization, globalInitialWeight)
     updateLearningRate(); // sets globalLearningRate
     updateRegularizationRate(); // sets globalRegularizationRate
 
@@ -110,10 +113,10 @@ function updateLayers() {
 	const layers = [];
 	let lastSize = toggledInputs.length;
 	for (let i = 0; i < valSplit.length; i++) {
-		layers.push(new Layer(lastSize, valSplit[i], globalActivation, globalRegularization, randomWeight));
+		layers.push(new Layer(lastSize, valSplit[i], globalActivation, globalRegularization, globalInitialWeight));
 		lastSize = valSplit[i];
 	}
-	layers.push(new Layer(lastSize, 3, globalActivation, globalRegularization, randomWeight));
+	layers.push(new Layer(lastSize, 3, globalActivation, globalRegularization, globalInitialWeight));
 
 
     globalLayers = layers;
@@ -166,6 +169,15 @@ function updateRegularizationRate() {
 
     regularizationRate.innerHTML = parsed;
     regularizationRate.style.border = "none";
+}
+function updateInit() {
+    const initSelect = document.getElementById("INIT");
+    switch (initSelect.value) {
+        case "random": globalInitialWeight = randomWeight; break;
+        case "normal": globalInitialWeight = normalWeight; break;
+        case "xavier": globalInitialWeight = xavierWeight; break;
+        case "he": globalInitialWeight = heWeight; break;
+    }
 }
 
 
@@ -301,7 +313,7 @@ function resetNetwork() {
     const newLayers = [];
     for (let i = 0; i < globalLayers.length; i++) {
         const layer = globalLayers[i];
-        newLayers.push(new Layer(layer.numInputs, layer.numOutputs, layer.activationFunction, layer.regularizationFunction, randomWeight));
+        newLayers.push(new Layer(layer.numInputs, layer.numOutputs, layer.activationFunction, layer.regularizationFunction, layer.weightInitFunction));
     }
     globalLayers = newLayers;
 

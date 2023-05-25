@@ -4,11 +4,11 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 
 ## TODO
 
-- Epoch counter
+- Plugins for weight initialization
+    - Check if they are right!!
 - Style 'select' elements
 - Weight momentum
 - ??
-	- Plugins for weight initialization
     - Cost graph
     - Network visualization
 - ITCH.IO page
