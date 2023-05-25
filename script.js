@@ -379,8 +379,8 @@ function render() {
         inputFns.push(fn);
     }
 
-    for (let x = 0; x < resolution; x++) {
-        for (let y = 0; y < resolution; y++) {
+    for (let x = 0; x < resolution + 1; x++) {
+        for (let y = 0; y < resolution + 1; y++) {
 
             const baseInputs = [x / resolution, y / resolution];
             const inputs = [];
@@ -393,7 +393,7 @@ function render() {
 
             context.fillStyle = rgbToFillStyle(outputs[0], outputs[1], outputs[2]);
 
-            context.fillRect(Math.floor(x * w), Math.floor(y * w), ceilW, ceilW);
+            context.fillRect(Math.floor((x - 0.5) * w), Math.floor((y - 0.5) * w), ceilW, ceilW);
         }
     }
 
