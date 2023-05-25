@@ -154,10 +154,19 @@ const L1 			= x => Math.abs(x);
 const L2 			= x => x ** 2;
 const noRegulation	= x => 0;
 
-const randomWeight 	= (numInputs, numOutputs) => Math.random() - 0.5; // -0.5 to 0.5
+const randomWeight 	= (numInputs, numOutputs) => whileNot(Math.random, 0.5, []) - 0.5; // -0.5 to 0.5
 // TODO: ARE THESE RIGHT??
-const xavierWeight 	= (numInputs, numOutputs) => gaussianRandom(0, Math.sqrt(2 / (numInputs + numOutputs)));
-const heWeight		= (numInputs, numOutputs) => gaussianRandom(0, Math.sqrt(2 / numInputs));
+const xavierWeight 	= (numInputs, numOutputs) => whileNot(gaussianRandom, 0, [0, Math.sqrt(2 / (numInputs + numOutputs))]);
+const heWeight		= (numInputs, numOutputs) => whileNot(gaussianRandom, 0, [0, Math.sqrt(2 / numInputs)]);
+
+function whileNot(fn, value, args) {
+	while (true) {
+		const result = fn(...args);
+		if (result !== value) {
+			return result;
+		}
+	}
+}
 
 
 // Standard Normal variate using Box-Muller transform.
