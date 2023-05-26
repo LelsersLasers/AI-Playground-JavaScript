@@ -68,6 +68,16 @@ class Layer {
 		}
 		return cost / (this.numInputs * this.numOutputs + this.numOutputs)
 	}
+	gradientMagnitude() {
+		let sum = 0;
+		for (let i = 0; i < this.numOutputs; i++) {
+			for (let j = 0; j < this.numInputs; j++) {
+				sum += this.weightGradients[i][j] ** 2;
+			}
+			sum += this.biasGradients[i] ** 2;
+		}
+		return Math.sqrt(sum);
+	}
 }
 
 class NeuralNetwork {
@@ -109,6 +119,13 @@ class NeuralNetwork {
 		for (let i = 0; i < this.layers.length; i++) {
 			this.layers[i].applyGradients(this.learningRate);
 		}
+	}
+	gradientMagnitude() {
+		let sum = 0;
+		for (let i = 0; i < this.layers.length; i++) {
+			sum += this.layers[i].gradientMagnitude() ** 2;
+		}
+		return Math.sqrt(sum);
 	}
 	learn(dataPoints) {
 		const startCost = this.costOfAll(dataPoints);

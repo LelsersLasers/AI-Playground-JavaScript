@@ -48,11 +48,11 @@ let network = new NeuralNetwork(globalLayers, globalLearningRate, globalRegulari
 let selectedColor = [1.0, 0.0, 0.0];
 
 const dataPoints = [
-	new DataPoint([0.2, 0.2], [1.0, 0.0, 0.0]), // red
-    new DataPoint([0.8, 0.8], [0.0, 1.0, 0.0]), // green
-	new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
-    new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
-    new DataPoint([0.5, 0.5], [1.0, 1.0, 1.0]), // white
+	// new DataPoint([0.2, 0.2], [1.0, 0.0, 0.0]), // red
+    // new DataPoint([0.8, 0.8], [0.0, 1.0, 0.0]), // green
+	// new DataPoint([0.2, 0.8], [0.0, 0.0, 1.0]), // blue
+    // new DataPoint([0.8, 0.2], [1.0, 1.0, 0.0]), // yellow
+    // new DataPoint([0.5, 0.5], [1.0, 1.0, 1.0]), // white
 
 
     // new DataPoint([0.15, 0.15], [1.0, 0.0, 0.0]), // red
@@ -71,6 +71,34 @@ const dataPoints = [
     // new DataPoint([0.50, 0.85], [1.0, 0.0, 0.0]), // red
     // new DataPoint([0.85, 0.85], [0.0, 0.0, 1.0]), // blue
 ];
+{
+    function equallySpacedPointsOfCircle(radius, numPoints) {
+        const points = [];
+        for (let i = 0; i < numPoints; i++) {
+            const angle = i * 2 * Math.PI / numPoints;
+            points.push([radius * Math.cos(angle), radius * Math.sin(angle)]);
+        }
+        return points;
+    }
+
+    const numPoints = 20;
+
+    const redPoints = equallySpacedPointsOfCircle(0.4, numPoints);
+    // const greenPoints = equallySpacedPointsOfCircle(0.3, numPoints);
+    const bluePoints = equallySpacedPointsOfCircle(0.25, numPoints);
+
+    for (let i = 0; i < numPoints; i++) {
+        const redPoint = [0.5 + redPoints[i][0], 0.5 + redPoints[i][1]];
+        dataPoints.push(new DataPoint(redPoint, [1.0, 0.0, 0.0]));
+
+        // const greenPoint = [0.5 + greenPoints[i][0], 0.5 + greenPoints[i][1]];
+        // dataPoints.push(new DataPoint(greenPoint, [0.0, 1.0, 0.0]));
+
+        const bluePoint = [0.5 + bluePoints[i][0], 0.5 + bluePoints[i][1]];
+        dataPoints.push(new DataPoint(bluePoint, [0.0, 0.0, 1.0]));
+    }
+}
+
 
 
 let paused = false;
@@ -426,6 +454,7 @@ function render() {
 	document.getElementById("fpsText").innerHTML = "FPS: " + Math.round(1000 / delta);
 	document.getElementById("costText").innerHTML = "Cost: " + network.costOfAll(transformedDataPoints).toFixed(3);
     document.getElementById("epochesText").innerHTML = "Epoches: " + epoches;
+    document.getElementById("gradientText").innerHTML = "Gradient Magnitude: " + network.gradientMagnitude().toFixed(3);
 
 
 	window.requestAnimationFrame(render);
