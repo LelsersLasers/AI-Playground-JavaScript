@@ -7,6 +7,8 @@ Tinker with a neural network in your browser. Self-made model without any calcul
 - Plugins for weight initialization
     - Check if they are right!!
 - Style 'select' elements
+    - Padding
+    - Border radius
 - ??
     - Cost graph
     - Network visualization
