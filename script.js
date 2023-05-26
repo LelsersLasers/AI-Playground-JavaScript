@@ -394,6 +394,7 @@ function renderDataPoints() {
 	}
 }
 
+let gradientMagnitude = 0;
 function render() {
 	context.fillStyle = "#3B4252";
 	context.fillRect(0, 0, canvas.width, canvas.height);
@@ -441,7 +442,7 @@ function render() {
     }
 
 	if (!paused && dataPoints.length > 0) {
-		network.learnIterate(transformedDataPoints, iterations);
+		gradientMagnitude =  network.learnIterate(transformedDataPoints, iterations);
         epoches += iterations;
 	}
 
@@ -454,7 +455,7 @@ function render() {
 	document.getElementById("fpsText").innerHTML = "FPS: " + Math.round(1000 / delta);
 	document.getElementById("costText").innerHTML = "Cost: " + network.costOfAll(transformedDataPoints).toFixed(3);
     document.getElementById("epochesText").innerHTML = "Epoches: " + epoches;
-    document.getElementById("gradientText").innerHTML = "Gradient Magnitude: " + network.gradientMagnitude().toFixed(3);
+    document.getElementById("gradientText").innerHTML = "Gradient Magnitude: " + gradientMagnitude.toFixed(3);
 
 
 	window.requestAnimationFrame(render);

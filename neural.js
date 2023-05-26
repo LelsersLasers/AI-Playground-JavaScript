@@ -152,10 +152,13 @@ class NeuralNetwork {
 		}
 	}
 	learnIterate(dataPoints, iterations) {
+		let gardientMagnitudeValue = 0;
 		for (let i = 0; i < iterations; i++) {
 			this.learn(dataPoints);
+			gardientMagnitudeValue = this.gradientMagnitude();
 			this.applyGradients();
 		}
+		return gardientMagnitudeValue;
 	}
 }
 
