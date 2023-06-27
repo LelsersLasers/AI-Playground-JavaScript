@@ -49,6 +49,18 @@
 
             <hr />
 
+            <label for="LEARNING_RATE">Learning Rate:</label>
+            <output>0.01</output>
+            <input type="range" id="LEARNING_RATE" name="LEARNING_RATE" min="0.001" max="2" step="0.001" value="0.01" oninput="this.previousElementSibling.value = this.value" />
+            <br class="spacing" />
+            
+            <label for="MOMENTUM">Momentum:</label>
+            <output>0.9</output>
+            <input type="range" id="MOMENTUM" name="MOMENTUM" min="0" max="1" step="0.01" value="0.9" oninput="this.previousElementSibling.value = this.value" />
+            <br class="spacing" />
+
+            <hr />
+
 			<label for="HIDDEN_LAYERS">Hidden Layers:</label>
             <input type="text" id="HIDDEN_LAYERS" value="6, 6" />
             <br class="spacing" />
@@ -62,25 +74,6 @@
 				<option value="linear">Linear</option>
 			</select>
 			<br class="spacing" />
-
-			<label for="LEARNING_RATE">Learning Rate:</label>
-            <input type="text" id="LEARNING_RATE" value="0.01" />
-            <br class="spacing" />
-
-            <!-- <label for="LEARNING_RATE">Learning Rate:</label>
-            <output>0.01</output>
-            <input type="range" id="LEARNING_RATE" name="LEARNING_RATE" min="0.001" max="2" step="0.001" value="0.01" oninput="this.previousElementSibling.value = this.value" />
-            <br class="spacing" /> -->
-
-            <label for="MOMENTUM">Momentum:</label>
-            <input type="text" id="MOMENTUM" value="0.9" />
-            <br class="spacing" />
-
-            <!-- <label for="MOMENTUM">Momentum:</label>
-            <output>0.9</output>
-            <input type="range" id="MOMENTUM" name="MOMENTUM" min="0" max="1" step="0.01" value="0.9" oninput="this.previousElementSibling.value = this.value" />
-            <br class="spacing" /> -->
-
 
             <br />
 
@@ -174,7 +167,6 @@
                 <input type="radio" id="custom" name="COLOR" value="false">
                 <label for="custom">Custom</label>
                     <label for="CUSTOM_COLOR">Color:</label>
-                    <!-- <input type="text" id="CUSTOM_COLOR" value="180, 142, 173" /> -->
                     <input type="color" id="CUSTOM_COLOR" value="#b48ead" />
                 <br class="spacing"/>
 

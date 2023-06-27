@@ -106,11 +106,9 @@ function apply() {
     updateActivation(); // sets globalActivation
     updateRegularization(); // sets globalRegularization
     updateInit(); // sets globalInitialWeight
-    updateMomentum(); // sets globalMomentum
 
     updateLayers(); // sets globalLayers (uses globalActivation, globalRegularization, globalInitialWeight, globalMomentum)
 
-    updateLearningRate(); // sets globalLearningRate
     updateRegularizationRate(); // sets globalRegularizationRate
 
     network = new NeuralNetwork(
@@ -194,20 +192,23 @@ function updateActivation() {
             break;
     }
 }
-function updateLearningRate() {
-    const learningRate = document.getElementById("LEARNING_RATE");
-
-    const parsed = parseFloat(learningRate.value);
-    if (isNaN(parsed) || parsed < 0 || parsed > 1) {
-        learningRate.style.border = "2px solid #BF616A";
-        return;
-    }
-
-    globalLearningRate = parsed;
-
-    learningRate.innerHTML = parsed;
-    learningRate.style.border = "none";
+function setOnChangeForLearningRate() {
+    const learningRateElement = document.getElementById("LEARNING_RATE");
+    learningRateElement.addEventListener("input", function () {
+        globalLearningRate = parseFloat(learningRateElement.value);
+        network.learningRate = globalLearningRate;
+    });
 }
+function setOnChangeForMomentum() {
+    const momentumElement = document.getElementById("MOMENTUM");
+    momentumElement.addEventListener("input", function () {
+        globalMomentum = parseFloat(momentumElement.value);
+        for (let i = 0; i < network.layers.length; i++) {
+            network.layers[i].momentum = globalMomentum;
+        }
+    });
+}
+
 function updateRegularization() {
     const regularizationSelect = document.getElementById("REGULARIZATION");
     switch (regularizationSelect.value) {
@@ -249,20 +250,6 @@ function updateInit() {
             globalInitialWeight = heWeight;
             break;
     }
-}
-function updateMomentum() {
-    const momentum = document.getElementById("MOMENTUM");
-
-    const parsed = parseFloat(momentum.value);
-    if (isNaN(parsed) || parsed < 0 || parsed > 1) {
-        momentum.style.border = "2px solid #BF616A";
-        return;
-    }
-
-    globalMomentum = parsed;
-
-    momentum.innerHTML = parsed;
-    momentum.style.border = "none";
 }
 
 function setOnChangeForRadioButtons() {
@@ -551,6 +538,9 @@ setOnChangeForInputs();
 
 setOnChangeForResolution();
 setOnChangeForIterations();
+
+setOnChangeForLearningRate();
+setOnChangeForMomentum();
 
 var t0 = performance.now();
 var t1 = performance.now();
