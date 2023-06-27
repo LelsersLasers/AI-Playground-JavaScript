@@ -266,6 +266,16 @@ function updateMomentum() {
 }
 
 function setOnChangeForRadioButtons() {
+    function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+
     const radioButtons = document.querySelectorAll(
         "input[type=radio][name='COLOR']"
     );
@@ -287,9 +297,11 @@ function setOnChangeForRadioButtons() {
                 case "black":
                     selectedColor = [0.0, 0.0, 0.0];
                     break;
-                case "custom":
-                    selectedColor = applyColorChange("CUSTOM_COLOR");
+                case "custom": {
+                    const rgb = hexToRgb(document.getElementById("CUSTOM_COLOR").value);
+                    selectedColor = [rgb.r / 255, rgb.g / 255, rgb.b / 255];
                     break;
+                }
             }
         });
     });
@@ -297,33 +309,10 @@ function setOnChangeForRadioButtons() {
     const customColor = document.getElementById("CUSTOM_COLOR");
     customColor.addEventListener("input", function () {
         if (document.getElementById("custom").checked) {
-            selectedColor = applyColorChange("CUSTOM_COLOR");
+            const rgb = hexToRgb(document.getElementById("CUSTOM_COLOR").value);
+            selectedColor = [rgb.r / 255, rgb.g / 255, rgb.b / 255];
         }
     });
-}
-function applyColorChange(id) {
-    const val = document.getElementById(id).value;
-    const valTrimmed = val.replace(/\s/g, "");
-    let valSplit = valTrimmed.split(",");
-
-    if (valSplit.length != 3) {
-        document.getElementById(id).style.border = "2px solid #BF616A";
-        return;
-    }
-
-    for (let i = 0; i < valSplit.length; i++) {
-        let valSplitInt = parseInt(valSplit[i]);
-        if (isNaN(valSplitInt) || valSplitInt < 0 || valSplitInt > 255) {
-            document.getElementById(id).style.border = "2px solid #BF616A";
-            return;
-        }
-        valSplit[i] = valSplitInt;
-    }
-
-    document.getElementById(id).value = valSplit.join(", ");
-    document.getElementById(id).style.border = "none";
-
-    return [valSplit[0] / 255, valSplit[1] / 255, valSplit[2] / 255];
 }
 
 function setOnChangeForResolution() {

@@ -41,9 +41,19 @@
             <input type="text" id="RESOLUTION" value="75" />
             <br class="spacing" />
 
+            <!-- <label for="RESOLUTION">Resolution:</label>
+            <output>75</output>
+            <input type="range" id="RESOLUTION" name="RESOLUTION" min="5" max="250" step="1" value="75" oninput="this.previousElementSibling.value = this.value" />
+            <br class="spacing" /> -->
+
             <label for="ITERATIONS">Epochs per frame:</label>
             <input type="text" id="ITERATIONS" value="1" />
             <br class="spacing" />
+
+            <!-- <label for="ITERATIONS">Epochs per frame:</label>
+            <output>75</output>
+            <input type="range" id="ITERATIONS" name="ITERATIONS" min="1" max="100" step="1" value="1" oninput="this.previousElementSibling.value = this.value" />
+            <br class="spacing" /> -->
 
             <hr />
 
@@ -65,9 +75,20 @@
             <input type="text" id="LEARNING_RATE" value="0.01" />
             <br class="spacing" />
 
+            <!-- <label for="LEARNING_RATE">Learning Rate:</label>
+            <output>0.01</output>
+            <input type="range" id="LEARNING_RATE" name="LEARNING_RATE" min="0.001" max="2" step="0.001" value="0.01" oninput="this.previousElementSibling.value = this.value" />
+            <br class="spacing" /> -->
+
             <label for="MOMENTUM">Momentum:</label>
             <input type="text" id="MOMENTUM" value="0.9" />
             <br class="spacing" />
+
+            <!-- <label for="MOMENTUM">Momentum:</label>
+            <output>0.9</output>
+            <input type="range" id="MOMENTUM" name="MOMENTUM" min="0" max="1" step="0.01" value="0.9" oninput="this.previousElementSibling.value = this.value" />
+            <br class="spacing" /> -->
+
 
             <br />
 
@@ -161,7 +182,8 @@
                 <input type="radio" id="custom" name="COLOR" value="false">
                 <label for="custom">Custom</label>
                     <label for="CUSTOM_COLOR">Color:</label>
-                    <input type="text" id="CUSTOM_COLOR" value="180, 142, 173" />
+                    <!-- <input type="text" id="CUSTOM_COLOR" value="180, 142, 173" /> -->
+                    <input type="color" id="CUSTOM_COLOR" value="#b48ead" />
                 <br class="spacing"/>
 
             </div>
