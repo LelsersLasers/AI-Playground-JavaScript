@@ -255,13 +255,14 @@ function updateInit() {
 function setOnChangeForRadioButtons() {
     function hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
+        return result
+            ? {
+                  r: parseInt(result[1], 16),
+                  g: parseInt(result[2], 16),
+                  b: parseInt(result[3], 16),
+              }
+            : null;
     }
-
 
     const radioButtons = document.querySelectorAll(
         "input[type=radio][name='COLOR']"
@@ -285,7 +286,9 @@ function setOnChangeForRadioButtons() {
                     selectedColor = [0.0, 0.0, 0.0];
                     break;
                 case "custom": {
-                    const rgb = hexToRgb(document.getElementById("CUSTOM_COLOR").value);
+                    const rgb = hexToRgb(
+                        document.getElementById("CUSTOM_COLOR").value
+                    );
                     selectedColor = [rgb.r / 255, rgb.g / 255, rgb.b / 255];
                     break;
                 }
