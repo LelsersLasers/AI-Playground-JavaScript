@@ -1,6 +1,6 @@
 const RADIUS_RATIO = 0.01;
 
-let resolution = 100;
+let resolution = 75;
 let iterations = 1;
 
 const canvas = document.getElementsByTagName("canvas")[0];
@@ -318,29 +318,13 @@ function setOnChangeForRadioButtons() {
 function setOnChangeForResolution() {
     const resolutionElement = document.getElementById("RESOLUTION");
     resolutionElement.addEventListener("input", function () {
-        const parsed = parseInt(resolutionElement.value);
-        if (isNaN(parsed) || parsed < 5 || parsed > 500) {
-            resolutionElement.style.border = "2px solid #BF616A";
-            return;
-        }
-        resolution = parsed;
-
-        resolutionElement.innerHTML = parsed;
-        resolutionElement.style.border = "none";
+        resolution = parseInt(resolutionElement.value);
     });
 }
 function setOnChangeForIterations() {
     const iterationsElement = document.getElementById("ITERATIONS");
     iterationsElement.addEventListener("input", function () {
-        const parsed = parseInt(iterationsElement.value);
-        if (isNaN(parsed) || parsed < 1 || parsed > 100) {
-            iterationsElement.style.border = "2px solid #BF616A";
-            return;
-        }
-        iterations = parsed;
-
-        iterationsElement.innerHTML = parsed;
-        iterationsElement.style.border = "none";
+        iterations = parseInt(iterationsElement.value);
     });
 }
 
